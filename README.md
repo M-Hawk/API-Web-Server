@@ -65,7 +65,9 @@ ORM's are an extension of many programming languages and therefore its very easy
 
 Sessions are a construct of ORM's that establish a connection to a database and allow conversations to occur such as queries between the ORM and the database. A session acts as an interaction in time that holds objects that have been loaded or associated in the sessions lifespan. It initially begins in a stateless manner, where then queries or other changes are effected and then exist in a session to be established as a transaction on a connection with an engine for the duration of the session, until they are either required to commit these changes or abandon the changes for the current transaction.
 
+Sessions track these changes as a single virtual transaction at a time, via use of an object that uses the underlying engine to make real connection transactions within the database.
 
+ORM's add another layer of protection against SQL injection by reducing explicit SQL queries and giving the ability to add query parameterization, which is a way to create SQL statements in a dynamic manner. By creating a basic query that has placeholders and adding the client side query parameters to the placeholders can help prevent malicious users from corrupting the database.
 
 ## Endpoints
 
