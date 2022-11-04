@@ -53,13 +53,19 @@ Object Relational Mapping is the process where objects are implemented to connec
 
 ORM's work by generating objects to connect with the tables in the database virtually, allowing developers to modify, update, retrive, delete and create data within these tables.
 
-The use of ORM's saves developers time and effort, and by extension reducing overall production cost by allowing them to connect, access and modify a given Database, utilising their preferred development language, without the need to even spend time learning SQL. This prevents developers having to write sometimes very long queries or implementations in the native DBMS language.
+The use of ORM's saves developers time and effort, and by extension reducing overall production cost by allowing them to connect, access and modify a given Database, utilising their preferred development language, often in a more simplistic manner, without the need to even spend time learning SQL. This prevents developers having to write sometimes very long queries or implementations in the native DBMS language.
 
 ORM's also make an application independant of the given DBMS used in the backend, allowing generic queries to be made in the utilised programming language, and if migrating to another database, these queries can easily be modified and reused in another DBMS.
 
 ORM's add the benefit of data abstraction which gives a very clear separation of concerns, with the data being housed in a server and managed and accessed using the ORM in a web application.
 
 ORM's are an extension of many programming languages and therefore its very easy to learn the nuances of a particular ORM tool if the language is already known, such as the ability to implement effective testing protocols, and conforming to good code design principles among the many developers that many be working on a project which would otherwise be difficult to achieve utilising the native DBMS SQL.
+
+### **Functionalities**
+
+Sessions are a construct of ORM's that establish a connection to a database and allow conversations to occur such as queries between the ORM and the database. A session acts as an interaction in time that holds objects that have been loaded or associated in the sessions lifespan. It initially begins in a stateless manner, where then queries or other changes are effected and then exist in a session to be established as a transaction on a connection with an engine for the duration of the session, until they are either required to commit these changes or abandon the changes for the current transaction.
+
+
 
 ## Endpoints
 
