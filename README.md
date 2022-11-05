@@ -81,6 +81,94 @@ ORM's add another layer of protection against SQL injection by reducing explicit
 
 ## Project Management
 
+During the project planning stage it was determined that production would be broken down into phases to achieve better management of the tasks required utilising an agile software development life cycle methodology. These phases are listed below:
+
+### **Analysis Phase**
+
+**Idea**
+
+The Aim of this project is to provide better access for Rock Climbers, and in particular those who participate in the style of Bouldering to be able to have access to a tracking system, that logs their climbing and achievements as well as giving them the ability to access a database of information relating to the routes or problems, by seeking information on locations, difficulty and other pertinent information relevant to a particular route, and giving them the ability to add additional routes to the database for the benefit of all.
+
+The database is aimed to be mananged by members of the climbing community who have administration rights to ensure quality data integrity and resolve and issues that may arise.
+
+**Requirements**
+
+Prior to design, a list of requirements have been determined that will achieve the aforementioed goal.
+
+1. A Project management software is to be implemented to ensure good management of tasks and required outcomes. In order to achieve good time management an Agile methodology is to be utilised.
+
+2. Creation of an ERD to indentify database requirements and expected relationships between entities: Users, Ascents, Routes/Problems and Locations.
+
+3. A Database management system is required to manage all the expected data for the users. The total user base at this stage is not expected to rise above a single server requirement. The users will interact in a relational manner with other entities of the database, therefore a Relational DBMS should be utilised.
+
+4. The programming language utilised should have the required addons and frameworks to achieve the desired outcome, be simplistic in syntax and easy to understand to ensure good code design. The potential of administrators managing the database in the climbing community is subject to change, therefore new developers may be required to be trained, which gives higher consideration to a simplistic approach.
+
+5. The expected user base is to interact with the product in a web application through a browser, therefore a web application framework is required to achieve this.
+
+6. To accurately manage incoming and outgoing requests to the database and ensure data integrity is effectively managed and responses are sent in an expected manner, an Application Programming Interface (API) should be utilised.
+
+7. In order to protect user information and give the correct access to administrators, user authentication and authorisation is required.
+
+8. Incoming user requests are to be validated to prevent unexpected behaviour and potential malicious attacks against the database and its contents.
+
+9. At this stage there is no requirement for a front end framework, as this will be implemented at a later stage.
+
+### **Design Phase**
+
+1. In order to track stages of development, it is determined that the agile methodology of Kanban is used, breaking tasks down into smaller stages to be implemented in sprints to ensure effective time management. This will be tracked using Trello and tasks will be separated into cards with specific expectations and time requirements. Github is to be utilised to protect progress throughout the implementation process.
+
+2. Construction of an ERD utilising LucidChart for simplistic UI and efficient and clear relational notation.
+
+3. The RDBMS utilised is PostgreSQL due to its extensive extensions of the SQL language and simple commands to achieve CRUD operations. PostgreSQL is also excellent for a small to medium user base with high query performance at the expected user level.
+
+4. Python has been chosed as the development language due to its simplicty and extensive extensions including efficient and flexible web frameworks of a project at this size.
+
+5. Utilising its native language of Python the web framework decided to manage the backend is Flask. Flask is a robust extensible web framework with support to manage databases in a secure manner. With add ons such as Marshmallow and the ORM SQL Alchemy allows efficient and secure querying of the database with the ability to create paramaterized CRUD operations tohelp prevent malicous attacks.
+
+6. The restful design architecture methodology in an API is to be used to ensure accurate and congruent data to the front end utilising a JSON format. The MVC architecture will also be implemented to create a separation of concerns within the development process and adding a simplistic file structure allows debugging and maintenance to be achieved by a relatively small number of developers.
+
+7. To ensure authentication and authorisation for users and administrators, JWT tokens are to be implemented in the design process.
+
+8. During the later stages of development user validation wil be vetted using Flask/Marshmallows inbuilt packages, ensuring only expected input is received to the database.
+
+9. Currently no Front End Framework has been identified and is to be considered once a working implementation of the API is achieved.
+
+### **Implementation Phase**
+
+1. Create Project Management Software Trello board for task tracking throughout the implementation phase.
+2. Create ERD to determine database structure and implementation
+3. Create file structure adhering to MVC architecture protocols
+4. Initialise Github repository and conduct regular commits throughout implementation
+5. Install all required Software, Programs and add ons including Flask, Marshmallow, SQLAlchemy, PostreSQL
+6. Create virtual environment & utilities, requirements.txt, gitignore, pycache, env, and sample files.
+7. Construction of a simple Flask application to ensure expected behaviour
+8. Develop SQL Alchemy models from developed ERD
+9. Creation of Controllers and Blueprints
+10. Marshmallow Schema creation
+11. Creation of Routes and Endpoints including all CRUD operations
+12. Authentication and Authorisation
+13. CLI command creation for testing phase
+
+### **Testing Phase**
+
+1. Test CLI commands to ensure database is represented as expected
+2. Test all expected output is in JSON format
+3. Test authorisation and authentication
+4. Test all CRUD commands
+5. Test all user input is valid
+
+### **Deployment**
+
+Deployment is to be postponed until a suitable Front End Framework is identified post API development and testing.
+
+### **Maintenance Phase**
+
+Maintenance will be conducted at regular intervals by administrators utilising the steps expressed in the testing phase. Furthermore, administrators will regularly check for potential misuse and malicious interference of the database. As well as keeping track of user numbers to determine scalability requirements.
+
+[Project Management Software Link](https://trello.com/b/r5QgFhTp/t2a2-web-api)
+
+Add photos of trello board here
+
 ## Resources
 
 ## Tech-Stack
