@@ -22,11 +22,11 @@ The database is protected and managed by members of the climbing community with 
 
 ## Database
 
-The database management system implemented to govern the data is PostgreSQL, which is a popular open-source Object Relational database system that extends the Structured Query Language or SQL.
+The database management system implemented to govern the data is PostgreSQL, which is a popular open-source Object Relational database system that extends the Structured Query Language or SQL (Editor, 2019).
 
 ### **Benefits**
 
-PostreSQL has been chosen due to its many benefits at the expected dataset and user base size. Being a Relational DBMS, PostreSQL offers great scalability to a small to medium-sized database, due to the tendency to house the entire database on a single server. Performance is also excellent for reading & writing data at the expected database size, with good speed for retrieval by implementing join tables and allowing indexing.
+PostreSQL has been chosen due to its many benefits at the expected dataset and user base size. Being a Relational DBMS, PostreSQL offers great scalability to a small to medium-sized database, due to the tendency to house the entire database on a single server. Performance is also excellent for reading & writing data at the expected database size, with good speed for retrieval by implementing join tables and allowing indexing (Editor, 2019).
 
 PostreSQL has many more features to add on top of the standard SQL, and has a simple syntax to utilise CRUD commands throughout the database. This simplicity makes database management very efficient and accurate.
 
@@ -41,21 +41,21 @@ Being open-source has its negatives due to the fact that PostreSQL has no warran
 
 In general not many open-source applications support PostreSQL, which can limit its usage. PostreSQL is also slower than some other DBMS such as MySQL, due to its focus on compatability.
 
-Relational Databases suffer performance issues with larger sets of data due to the inclination to vertically scale, with the entire database generally existing on a singular server, and the ability to increase dataset sizes consists of scaling vertically by adding more CPU, RAM and GPU to a system.
+Relational Databases suffer performance issues with larger sets of data due to the inclination to vertically scale, with the entire database generally existing on a singular server, and the ability to increase dataset sizes consists of scaling vertically by adding more CPU, RAM and GPU to a system (Editor, 2019).
 
-Non relational DBMS such as MongoDB, Cassandra and Firebase using noSQL tend to have better larger dataset scalability and performance by horizontally scaling and implementing mulitple servers to the database pool, which share data throughout the network.
+Non relational DBMS such as MongoDB, Cassandra and Firebase using noSQL tend to have better larger dataset scalability and performance by horizontally scaling and implementing mulitple servers to the database pool, which share data throughout the network (Editor, 2019).
 
 ## ORM
 
-Object Relational Mapping is the process where objects are implemented to connect a programming language to database systems, where object-oriented programming concepts can be applied to SQL databases. There are many different ORM packages specific to particular object oriented languages, such as SQL Alchemy's use with Pythons web framework Flask or Hibernate ORM with Java.
+In research from Pedamkar … (2022) Object Relational Mapping is the process where objects are implemented to connect a programming language to database systems, where object-oriented programming concepts can be applied to SQL databases. There are many different ORM packages specific to particular object oriented languages, such as SQL Alchemy's use with Pythons web framework Flask or Hibernate ORM with Java.
 
 ### **Key Benefits**
 
-ORM's work by generating objects to connect with the tables in the database virtually, allowing developers to modify, update, retrive, delete and create data within these tables.
+In research from LearnNowOnline … (2012) ORM's work by generating objects to connect with the tables in the database virtually, allowing developers to modify, update, retrive, delete and create data within these tables.
 
 The use of ORM's saves developers time and effort, and by extension reducing overall production cost by allowing them to connect, access and modify a given Database, utilising their preferred development language, often in a more simplistic manner, without the need to even spend time learning SQL. This prevents developers having to write sometimes very long queries or implementations in the native DBMS language.
 
-ORM's also make an application independant of the given DBMS used in the backend, allowing generic queries to be made in the utilised programming language, and if migrating to another database, these queries can easily be modified and reused in another DBMS.
+ORM's also make an application independant of the given DBMS used in the backend, allowing generic queries to be made in the utilised programming language, and if migrating to another database, these queries can easily be modified and reused in another DBMS do to the irrespective nature of these queries Pedamkar … (2022).
 
 ORM's add the benefit of data abstraction which gives a very clear separation of concerns, with the data being housed in a server and managed and accessed using the ORM in a web application.
 
@@ -63,11 +63,11 @@ ORM's are an extension of many programming languages and therefore its very easy
 
 ### **Functionalities**
 
-Sessions are a construct of ORM's that establish a connection to a database and allow conversations to occur such as queries between the ORM and the database. A session acts as an interaction in time that holds objects that have been loaded or associated in the sessions lifespan. It initially begins in a stateless manner, where then queries or other changes are effected and then exist in a session to be established as a transaction on a connection with an engine for the duration of the session, until they are either required to commit these changes or abandon the changes for the current transaction.
+According to (Session Basics — SQLAlchemy 1.4 Documentation, n.d.)Sessions are a construct of ORM's that establish a connection to a database and allow conversations to occur such as queries between the ORM and the database. A session acts as an interaction in time that holds objects that have been loaded or associated in the sessions lifespan. It initially begins in a stateless manner, where then queries or other changes are effected and then exist in a session to be established as a transaction on a connection with an engine for the duration of the session, until they are either required to commit these changes or abandon the changes for the current transaction.
 
-Sessions track these changes as a single virtual transaction at a time, via use of an object that uses the underlying engine to make real connection transactions within the database.
+Sessions track these changes as a single virtual transaction at a time, via use of an object that uses the underlying engine to make real connection transactions within the database (Transactions and Connection Management — SQLAlchemy 1.4 Documentation, n.d.).
 
-ORM's add another layer of protection against SQL injection by reducing explicit SQL queries and giving the ability to add query parameterization, which is a way to create SQL statements in a dynamic manner. By creating a basic query that has placeholders and adding the client side query parameters to the placeholders can help prevent malicious users from corrupting the database.
+ORM's add another layer of protection against SQL injection by reducing explicit SQL queries and giving the ability to add query parameterization, which is a way to create SQL statements in a dynamic manner. By creating a basic query that has placeholders and adding the client side query parameters to the placeholders can help prevent malicious users from corrupting the database (What Is SQL Injection | SQLI Attack Example & Prevention Methods | Imperva, 2021).
 
 ## Endpoints
 
@@ -169,6 +169,8 @@ Maintenance will be conducted at regular intervals by administrators utilising t
 
 Add photos of trello board here
 
+![Early Stage Trello Board](/docs/Early Stage Trello Board.png)
+
 ## Resources
 
 ## Tech-Stack
@@ -176,3 +178,17 @@ Add photos of trello board here
 ## Author
 
 Matthew Hawkins
+
+## References
+
+[Editor. (2019, October 15). Comparing Database Management Systems: MySQL, PostgreSQL, MSSQL Server, MongoDB, Elasticsearch and others. AltexSoft.](https://www.altexsoft.com/blog/business/comparing-database-management-systems-mysql-postgresql-mssql-server-mongodb-elasticsearch-and-others/)
+
+[Pedamkar, P. (2022, June 21). What is ORM? EDUCBA.](https://www.educba.com/what-is-orm/)
+
+[LearnNowOnline. (2012, August 28). Proven eLearning for Individuals to Enterprise.](https://www.learnnowonline.com/blogs/2012/08/28/4-benefits-of-object-relational-mapping-orm)
+
+[Session Basics — SQLAlchemy 1.4 Documentation. (n.d.). Retrieved November 5, 2022, from](https://docs.sqlalchemy.org/en/14/orm/session_basics.html)
+
+[Transactions and Connection Management — SQLAlchemy 1.4 Documentation. (n.d.). Retrieved November 4, 2022, from](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html)
+
+[What is SQL Injection | SQLI Attack Example & Prevention Methods | Imperva. (2021, March 11). Learning Center.](https://www.imperva.com/learn/application-security/sql-injection-sqli/)
