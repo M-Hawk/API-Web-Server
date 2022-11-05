@@ -73,6 +73,12 @@ ORM's add another layer of protection against SQL injection by reducing explicit
 
 ## ERD
 
+### **About**
+
+Models and Assosciations explain
+
+![Entity Relationship Diagram]()
+
 ## Third Party Services
 
 ## Models & Relationships
@@ -169,7 +175,7 @@ Maintenance will be conducted at regular intervals by administrators utilising t
 
 Add photos of trello board here
 
-![Early Stage Trello Board](/docs/Early Stage Trello Board.png)
+![Early Stage Trello Board]()
 
 ## Resources
 
@@ -192,3 +198,6 @@ Matthew Hawkins
 [Transactions and Connection Management — SQLAlchemy 1.4 Documentation. (n.d.). Retrieved November 4, 2022, from](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html)
 
 [What is SQL Injection | SQLI Attack Example & Prevention Methods | Imperva. (2021, March 11). Learning Center.](https://www.imperva.com/learn/application-security/sql-injection-sqli/)
+
+
+[def]: /
