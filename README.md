@@ -2,17 +2,17 @@
 
 ## About
 
-Many Rock Climbers are eager to record what they have achieved in their climbing career or hobby by logging ascents of particular problems and historic routes.
+Many Australian rock climbers and specifically boulderers are eager to record what they have achieved in their climbing career or hobby by logging ascents of particular problems and historic routes.
 
 This is done to not only measure their success over time, but also demonstrate their skillset. It also acts as a way to communicate certain nuances of a particular climb and its perceived grading or difficulty to other members of the climbing community.
 
 Many climbing routes are located in undiscovered areas and are completely unknown until someone decides to observe whether there is an achieveable route to the top of the rockface or boulder, in which a climber may either ascend it themselves or document it as a route to be climbed. Historically the first ascensionist gets to name the route.
 
-The problem is, there isn't many ways for climbers to log their ascents of routes, discuss and find exact locations of the routes and the rock type, grade the level of difficulty, talk about particular nuances to achieve the climb and provide information on area ethics, hazards and changes to the area.
+The issue is, there isn't many ways for boulderers in Australia to log their ascents of problems, a term which is synonymous with route or climb, discuss and find exact locations of the routes and the rock type, grade the level of difficulty, talk about particular nuances to achieve the climb and provide information on area ethics, hazards and changes to the area.
 
 ## Aim
 
-The aim of this application is solve the aforementioned issues by providing a means for climbers to log their ascents, including grading the difficulty, methods of achieving it through descriptions, send type, and discussing changes that may be present.
+The aim of this application is solve the aforementioned issues by providing a means for boulderers to log their ascents, including grading the difficulty, methods of achieving it through descriptions, send type, and discussing changes that may be present.
 
 This solution is implemented through the use of an API Web Application that utilises a database to store information of known routes that have been documented, store users information and their ascents, as well as giving users the ability to access known routes and add their own found routes to the database.
 
@@ -73,17 +73,91 @@ ORM's add another layer of protection against SQL injection by reducing explicit
 
 ## ERD
 
-### **About**
-
-Models and Assosciations explain
-
-![Entity Relationship Diagram]()
+![Entity Relationship Diagram](/docs/T2A2%20ERD%20-%20Database%20ER%20diagram%20(crow's%20foot).png)
 
 ## Third Party Services
 
 ## Models & Relationships
 
 ## Database Relations
+
+To ensure an accurate representation of the database to be implemented programmatically, an Entity relationship diagram was produced representing relationships between entities. The following information was considered when constructing the relationship diagram.
+
+### **Entities**
+
+**Climbers**
+
+In order for application users to be able to log their ascents of particular climbs, they would need to be able to store these ascents in relationship to their personal account. Therefore a user table was required named "Climbers", which holds pertinent information relating to an individual account. An individual climber account has a relationship with the entity "Ascents" a climber can have zero or many "Ascents", depending on how many ascents they have logged.
+
+Attributes of a climber include:
+
+1. *climber_id*, the primary key for a climber
+2. *admin*, which determines what rights a climber have granted within the db and if they are an administrator or not
+3. *user_name*, holds a given climbers username
+4. *password*, holds a climbers password to ensure accurate authentication
+5. *first_name*, the first name of the climber
+6. *last_name*, the last name of the climber
+7. *email_address*, the climbers email address for contact
+8. *created*, timestamp of when the account was created
+9. *modified*, timestamp of when the account was last modified
+
+**Ascents**
+
+The Ascents entity represents the table containing information relating to a climbers experience of a particular problem and is required for a user to log their ascents. This entity relates to the Climbers entity and the Problems entity, and represents a join table between the two. An ascent can have one and only one climber, as in order for it to exist an individual climber must log it to be so, and an Ascent can have one and only one problem, as an individual ascent relates to an individual problem.
+
+Attributes of an ascent entity include:  
+
+1. *ascent_id*, the primary key which identifies a particular ascent by id  
+2. *climber_id*, the foreign key which maps to the primary key in the climbers entity in order to determine the climber who logged this ascent
+3. *problem_id*, the foreign key which maps an ascent to a particular problem
+4. *tick_type*, represents how an ascent was climbed, i.e was it climbed first go ?, second go or did they receive help or are they currently projecting the problem
+5. *comments*, allows a climber to describe particular points of note about a climb, their perception of the grade of difficulty and potential hazards or changes
+6. *created*, timestamp of when the ascent was created
+7. *modified*, timestamp of when the ascent was last modified
+
+**Problems**
+
+The Problems entity contains all the attributes relating to a particular "problem" or sometimes route and is required to hold all the information about the problems that climbers ascend. Problems are related to the Ascents entity for climbers to log their ascents, and the Areas entity which contains a group of problems. A problem can have zero of multiple ascents, that is zero or many people could climb this problem, and a problem belongs to one and only one bouldering Area.
+
+Attributes of a problem include:
+
+1. *problem_id*, a primary key that identifies a specific problem
+2. *area_id*, a foreign key , that relates a problem to a particular area in the areas entity using its area_id.
+3. *problem_name* holds the name of the particular problem
+4. *grade* represents the difficulty of the climb in the typical bouldering V scale
+5. *surface_type*, represents a particular type of rock or surface being climbed such as granite, limestone, sandstone etc
+6. *description*, provides information to climbers about the history and technical aspects of the climb
+7. *access*, displays how a climber can find a particular problem, is there a path, is it overgrown, how far is it from an areas entry location
+8. *height_metres*, the height of a particular problem in metres, rounded up if between two integers for safety
+9. *comments*, information on methods, hazards and changes that may have occured to a particular problem
+10. *created*, timestamp of when the problem was created
+11. *modified*, timestamp of when the problem was last modified
+
+**Areas**
+
+The Areas entity represents a collection of problems located in a particular area of the country, and is required to store information that is pertinent to a group of problems that may change over time. The areas entity is related to the problems entity and the states entity. An area can have one or many problems within in, as if there was zero it would not be listed, and an area belongs to one and only one state as its location does not change.
+
+Attributes of an area include:
+
+1. *area_id*, which is the primary key that identifies a particular area of boulders
+2. *state_id*, a foreign key that relates to the states entity through its primary key state_id, as areas are located within states
+3. *area_name*, an attribute that holds the name of a particular bouldering area
+4. *description*, generally information of a particular area, including its history and topography
+5. *ethics*, ethics that pertain to a particular climbing area such as expectations for noise, littering, no go areas and spiritual locations
+6. *access*, this attribute provides information to find and park in a specific climbing area, or a general mustering point
+7. *latitute*, provides up to a six decimal latitudinal geographic reference, suffixed by South for Australia
+8. *longitude*, provides up to a six decimal longitudinal geographic reference, suffixed by East for Australia
+9. *created*, timestamp of when the area was created
+10. *modified*, timestamp of when the area was last modified
+
+**States**
+
+The State entity lists all the states and territories of Australia, separating states allows areas to reference a states id, in the unlikely chance a state or territory changes name or is modified. A state can have zero or many bouldering areas within it.
+
+Attributes of a state include:
+
+1. *state_id*, the primary key that identifies a particular state or territory in Australian
+2. *state_name*, the name assosciated with a particular state_id
 
 ## Project Management
 
@@ -93,7 +167,7 @@ During the project planning stage it was determined that production would be bro
 
 **Idea**
 
-The Aim of this project is to provide better access for Rock Climbers, and in particular those who participate in the style of Bouldering to be able to have access to a tracking system, that logs their climbing and achievements as well as giving them the ability to access a database of information relating to the routes or problems, by seeking information on locations, difficulty and other pertinent information relevant to a particular route, and giving them the ability to add additional routes to the database for the benefit of all.
+The Aim of this project is to provide better access for Australian Rock Climbers, and in particular those who participate in the style of Bouldering to be able to have access to a tracking system, that logs their climbing and achievements as well as giving them the ability to access a database of information relating to the routes or problems, by seeking information on locations, difficulty and other pertinent information relevant to a particular route, and giving them the ability to add additional routes to the database for the benefit of all.
 
 The database is aimed to be mananged by members of the climbing community who have administration rights to ensure quality data integrity and resolve and issues that may arise.
 
@@ -103,7 +177,7 @@ Prior to design, a list of requirements have been determined that will achieve t
 
 1. A Project management software is to be implemented to ensure good management of tasks and required outcomes. In order to achieve good time management an Agile methodology is to be utilised.
 
-2. Creation of an ERD to indentify database requirements and expected relationships between entities: Users, Ascents, Routes/Problems and Locations.
+2. Creation of an ERD to indentify database requirements and expected relationships between entities: Users, Ascents, Routes/Problems and Areas.
 
 3. A Database management system is required to manage all the expected data for the users. The total user base at this stage is not expected to rise above a single server requirement. The users will interact in a relational manner with other entities of the database, therefore a Relational DBMS should be utilised.
 
@@ -175,7 +249,7 @@ Maintenance will be conducted at regular intervals by administrators utilising t
 
 Add photos of trello board here
 
-![Early Stage Trello Board]()
+![Early Stage Trello Board](/docs/Early%20Stage%20Trello%20Board.png)
 
 ## Resources
 
@@ -198,6 +272,3 @@ Matthew Hawkins
 [Transactions and Connection Management — SQLAlchemy 1.4 Documentation. (n.d.). Retrieved November 4, 2022, from](https://docs.sqlalchemy.org/en/14/orm/session_transaction.html)
 
 [What is SQL Injection | SQLI Attack Example & Prevention Methods | Imperva. (2021, March 11). Learning Center.](https://www.imperva.com/learn/application-security/sql-injection-sqli/)
-
-
-[def]: /
