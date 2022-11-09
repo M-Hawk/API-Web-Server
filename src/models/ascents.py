@@ -1,4 +1,4 @@
-from main import db
+from init import db, ma
 
 class Ascent(db.Model):
     __tablename__= "ascents"

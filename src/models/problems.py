@@ -1,4 +1,4 @@
-from main import db
+from init import db, ma
 
 class Problem(db.Model):
     __tablename__= "problems"
