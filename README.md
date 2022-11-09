@@ -115,12 +115,12 @@ Attributes of an ascent entity include:
 
 **Problems**
 
-The Problems entity contains all the attributes relating to a particular "problem" or sometimes route and is required to hold all the information about the problems that climbers ascend. Problems are related to the Ascents entity for climbers to log their ascents, and the Areas entity which contains a group of problems. A problem can have zero of multiple ascents, that is zero or many people could climb this problem, and a problem belongs to one and only one bouldering Area.
+The Problems entity contains all the attributes relating to a particular "problem" or sometimes called a route, and is required to hold all the information about the problems that climbers ascend. Problems are related to the ascents entity for climbers to log their ascents, and the sectors entity which contains a group of problems. A problem can have zero of multiple ascents, that is zero or many people could climb this problem, and a problem belongs to one and only one bouldering sector.
 
 Attributes of a problem include:
 
 1. *problem_id*, a primary key that identifies a specific problem
-2. *area_id*, a foreign key , that relates a problem to a particular area in the areas entity using its area_id.
+2. *sector_id*, a foreign key , that relates a problem to a particular sector in the sector entity using its sector_id.
 3. *problem_name* holds the name of the particular problem
 4. *grade* represents the difficulty of the climb in the typical bouldering V scale
 5. *surface_type*, represents a particular type of rock or surface being climbed such as granite, limestone, sandstone etc
@@ -130,16 +130,31 @@ Attributes of a problem include:
 9. *comments*, information on methods, hazards and changes that may have occured to a particular problem
 10. *created*, timestamp of when the problem was created
 
+**Sectors**
+
+The Sectors entity represents a collection of problems located within a greater geographical area of many boulders, as a group of boulders may be spread far about over a reasonable distance, a sector is briefly a general collection of a group of boulders, that have problems on them. This entity is required to store information that is pertinent to a group of problems that may change over time within its sector. The sectors entity is related to the problems entity and the areas entity. A sector can have one or many problems within it, as if there was zero it would not be listed, and a sector can only be a part of one and only one area as its location cannot change.
+
+Attributes of an sector include:
+
+1. *sector_id*, which is the primary key that identifies a particular area of boulders
+2. *area_id*, a foreign key that relates to the area entity through its primary key area_id, as sectors are located within areas
+3. *sector_name*, an attribute that holds the name of a particular bouldering sector
+4. *description*, general information of a particular area, including its history and topography
+5. *access*, this attribute provides information to find this group of boulders within a climbing area
+6. *latitute*, provides up to a six decimal latitudinal geographic reference, suffixed by South for Australia
+7. *longitude*, provides up to a six decimal longitudinal geographic reference, suffixed by East for Australia
+8. *created*, timestamp of when the area was created
+
 **Areas**
 
-The Areas entity represents a collection of problems located in a particular area of the country, and is required to store information that is pertinent to a group of problems that may change over time. The areas entity is related to the problems entity and the states entity. An area can have one or many problems within in, as if there was zero it would not be listed, and an area belongs to one and only one state as its location does not change.
+The Areas entity represents a collection of sectors located in a particular area of the country, and is required to store information that is pertinent to a group of sectors and their problems. The areas entity is related to the sectors entity and the states entity. An area can have one or many sectors within in, as if there was zero it would not be listed, and an area belongs to one and only one state as its location does not change.
 
 Attributes of an area include:
 
 1. *area_id*, which is the primary key that identifies a particular area of boulders
 2. *state_id*, a foreign key that relates to the states entity through its primary key state_id, as areas are located within states
 3. *area_name*, an attribute that holds the name of a particular bouldering area
-4. *description*, generally information of a particular area, including its history and topography
+4. *description*, general information of a particular area, including its history and topography
 5. *ethics*, ethics that pertain to a particular climbing area such as expectations for noise, littering, no go areas and spiritual locations
 6. *access*, this attribute provides information to find and park in a specific climbing area, or a general mustering point
 7. *latitute*, provides up to a six decimal latitudinal geographic reference, suffixed by South for Australia
