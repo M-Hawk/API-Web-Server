@@ -12,3 +12,10 @@ class Area(db.Model):
     latitude = db.Column(db.Float(precision=6))
     longitude = db.Column(db.Float(precision=6))
     created = db.Column(db.Date)
+
+    class AreaSchema(ma.Schema):
+        class Meta:
+        # Fields to expose
+            fields = ("area_id", "area_name", "state_id", "description", "ethics", "access", 
+            "latitude", "longitude", "created")
+            ordered = True
