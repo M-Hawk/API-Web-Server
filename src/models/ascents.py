@@ -9,4 +9,3 @@ class Ascent(db.Model):
     tick_type = db.Column(db.String(50)) # varchar (create tuples of tick types)
     comments = db.Column(db.Text)
     created = db.Column(db.Date)
-    modified = db.Column(db.Date)

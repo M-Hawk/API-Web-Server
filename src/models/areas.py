@@ -12,4 +12,3 @@ class Area(db.Model):
     latitude = db.Column(db.Float(precision=6))
     longitude = db.Column(db.Float(precision=6))
     created = db.Column(db.Date)
-    modified = db.Column(db.Date)

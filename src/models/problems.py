@@ -13,4 +13,3 @@ class Problem(db.Model):
     height_metres = db.Column(db.Integer)
     comments = db.Column(db.Text)
     created = db.Column(db.Date)
-    modified = db.Column(db.Date)

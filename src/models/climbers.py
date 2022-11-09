@@ -11,4 +11,3 @@ class Climber(db.Model):
     last_name = db.Column(db.String(80))
     email_address = db.Column(db.String, nullable=False, unique=True)
     created = db.Column(db.Date)
-    modified = db.Column(db.Date)
