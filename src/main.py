@@ -20,6 +20,9 @@ def create_app():
     # app.register_blueprint(cards_bp)
     # app.register_blueprint(auth_bp)
 
+    # prevents dict keys lists from auto ordering by alphabet and follows marshmallow ordering
+    app.config ['JSON_SORT_KEYS'] = False
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
     db.init_app(app)
