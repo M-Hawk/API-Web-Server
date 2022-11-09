@@ -29,6 +29,7 @@ def create_app():
 
 
     app.register_blueprint(db_commands)
+    app.register_blueprint(states_bp)
 
     return app
 
