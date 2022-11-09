@@ -28,28 +28,44 @@ def seed_db():
 
     states = [
         State(
-            state_name = "QLD"
+            state_name = "Queensland",
+            state_acronym = "QLD",
+            created = date.today()
         ),
         State(
-            state_name = "NSW"
+            state_name = "New South Wales",
+            state_acronym = "NSW",
+            created = date.today()
         ),
         State(
-            state_name = "ACT"
+            state_name = "Australian Capital Territory",
+            state_acronym = "ACT",
+            created = date.today()
         ),
         State(
-            state_name = "VIC"
+            state_name = "Victoria",
+            state_acronym = "VIC",
+            created = date.today()
         ),
         State(
-            state_name = "SA"
+            state_name = "South Australia",
+            state_acronym = "SA",
+            created = date.today()
         ),
         State(
-            state_name = "NT"
+            state_name = "Northern Territory",
+            state_acronym = "NT",
+            created = date.today()
         ),
         State(
-            state_name = "WA"
+            state_name = "Western Australia",
+            state_acronym = "WA",
+            created = date.today()
         ),
         State(
-            state_name = "TAS"
+            state_name = "Tasmania",
+            state_acronym = "TAS",
+            created = date.today()
         ),
     ]
 
@@ -87,7 +103,7 @@ def seed_db():
 
 
 
-#     users = [
+#     problems = [
 #         User(
 #             email='admin@spam.com',
 #             password=bcrypt.generate_password_hash('eggs').decode('utf-8'),

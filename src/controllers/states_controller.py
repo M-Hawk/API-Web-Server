@@ -29,6 +29,7 @@ def get_one_card(id):
 
 
 # The POST route endpoint
+# ADD VALIDATION FOR POSTING STATES, MUST CONFORM TO NAMING CONVENTION
 @states_bp.route('/', methods=['POST'])
 # @jwt_required()
 def create_states():
