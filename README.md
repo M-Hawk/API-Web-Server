@@ -99,7 +99,6 @@ Attributes of a climber include:
 6. *last_name*, the last name of the climber
 7. *email_address*, the climbers email address for contact
 8. *created*, timestamp of when the account was created
-9. *modified*, timestamp of when the account was last modified
 
 **Ascents**
 
@@ -113,7 +112,6 @@ Attributes of an ascent entity include:
 4. *tick_type*, represents how an ascent was climbed, i.e was it climbed first go ?, second go or did they receive help or are they currently projecting the problem
 5. *comments*, allows a climber to describe particular points of note about a climb, their perception of the grade of difficulty and potential hazards or changes
 6. *created*, timestamp of when the ascent was created
-7. *modified*, timestamp of when the ascent was last modified
 
 **Problems**
 
@@ -131,7 +129,6 @@ Attributes of a problem include:
 8. *height_metres*, the height of a particular problem in metres, rounded up if between two integers for safety
 9. *comments*, information on methods, hazards and changes that may have occured to a particular problem
 10. *created*, timestamp of when the problem was created
-11. *modified*, timestamp of when the problem was last modified
 
 **Areas**
 
@@ -148,7 +145,6 @@ Attributes of an area include:
 7. *latitute*, provides up to a six decimal latitudinal geographic reference, suffixed by South for Australia
 8. *longitude*, provides up to a six decimal longitudinal geographic reference, suffixed by East for Australia
 9. *created*, timestamp of when the area was created
-10. *modified*, timestamp of when the area was last modified
 
 **States**
 
@@ -158,6 +154,8 @@ Attributes of a state include:
 
 1. *state_id*, the primary key that identifies a particular state or territory in Australian
 2. *state_name*, the name assosciated with a particular state_id
+3. *state_acronym*, the acroynm of a state_name
+4. *created*, timestamp of when the area was created
 
 ## Project Management
 
