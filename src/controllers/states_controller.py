@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from init import db
 from datetime import date
 
@@ -9,7 +9,7 @@ states_bp = Blueprint('states', __name__, url_prefix='/states')
 
 # The GET routes endpoints
 
-# Gets all the states in the database
+# Gets all the states in the database and their areas
 @states_bp.route('/', methods=['GET'])
 def get_states():
     selection = db.select(State).order_by(State.state_id)
