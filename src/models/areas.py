@@ -16,13 +16,14 @@ class Area(db.Model):
     state_id = db.Column(db.Integer, db.ForeignKey("states.state_id"), nullable=False)
 
     state = db.relationship("State", back_populates="areas")
+    sectors = db.relationship("Sector", back_populates="area", cascade="all, delete")
 
 class AreaSchema(ma.Schema):
 
-    state = fields.Nested('StateSchema', only=['state_id', 'state_name'])
+    state = fields.Nested("StateSchema", only=["state_name"])
 
     class Meta:
     # Fields to expose
-        fields = ("area_id", "area_name", "state", "description", "ethics", "access", 
+        fields = ("area_id", "area_name", "state_id", "state", "description", "ethics", "access", 
         "latitude", "longitude", "created")
         ordered = True

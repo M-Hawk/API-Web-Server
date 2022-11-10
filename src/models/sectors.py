@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 class Sector(db.Model):
     __tablename__= "sectors"
@@ -13,10 +14,15 @@ class Sector(db.Model):
 
     area_id = db.Column(db.Integer, db.ForeignKey("areas.area_id"), nullable=False)
 
+    area = db.relationship("Area", back_populates="sectors")
+    problems = db.relationship("Problem", back_populates="sector", cascade="all, delete")
 
-    # class AreaSchema(ma.Schema):
-    #     class Meta:
-    #     # Fields to expose
-    #         fields = ("area_id", "area_name", "state", "description", "ethics", "access", 
-    #         "latitude", "longitude", "created")
-    #         ordered = True    
+class SectorSchema(ma.Schema):
+
+    area = fields.Nested("AreaSchema", only=["area_name"])
+
+    class Meta:
+    # Fields to expose
+        fields = ("sector_id", "sector_name", "area_id", "area", "description", "access", 
+        "latitude", "longitude", "created")
+        ordered = True

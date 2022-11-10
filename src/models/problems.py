@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 class Problem(db.Model):
     __tablename__= "problems"
@@ -14,3 +15,16 @@ class Problem(db.Model):
     created = db.Column(db.Date)
 
     sector_id = db.Column(db.Integer, db.ForeignKey("sectors.sector_id"), nullable=False)
+
+    sector = db.relationship("Sector", back_populates="problems")
+    # ascents = db.relationship("Ascent", back_populates="problem", cascade="all, delete")
+
+class ProblemSchema(ma.Schema):
+
+    sector = fields.Nested("SectorSchema", only=["sector_name"])
+
+    class Meta:
+    # Fields to expose
+        fields = ("problem_id", "problem_name", "sector_id", "sector", "grade", "surface_type", "description", 
+        "access", "height_metres", "comments", "created")
+        ordered = True
