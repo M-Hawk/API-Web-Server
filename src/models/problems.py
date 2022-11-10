@@ -4,7 +4,6 @@ class Problem(db.Model):
     __tablename__= "problems"
     # Created table attributes using imported db object
     problem_id = db.Column(db.Integer, primary_key=True)
-    sector_id = db.Column(db.Integer, db.ForeignKey("areas.area_id"), nullable=False)
     problem_name = db.Column(db.String(50))
     grade = db.Column(db.String(4)) # Either add list of tuples or ensure V interpolated in front
     surface_type = db.Column(db.String(50))
@@ -13,3 +12,5 @@ class Problem(db.Model):
     height_metres = db.Column(db.Integer)
     comments = db.Column(db.Text)
     created = db.Column(db.Date)
+
+    sector_id = db.Column(db.Integer, db.ForeignKey("sectors.sector_id"), nullable=False)
