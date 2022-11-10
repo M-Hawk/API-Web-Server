@@ -2,8 +2,8 @@ from flask import Flask
 from init import db, ma, bcrypt, jwt
 from controllers.states_controller import states_bp
 from controllers.areas_controller import areas_bp
-# from controllers.sectors_controller import sectors_bp
-# from controllers.problems_controller import problems_bp
+from controllers.sectors_controller import sectors_bp
+from controllers.problems_controller import problems_bp
 # from controllers.ascents_controller import ascents_bp
 # from controllers.climbers_controller import climbers_bp
 from controllers.cli_controller import db_commands
@@ -39,8 +39,8 @@ def create_app():
     app.register_blueprint(db_commands)
     app.register_blueprint(states_bp)
     app.register_blueprint(areas_bp)
-    # app.register_blueprint(states_bp)
-    # app.register_blueprint(states_bp)
+    app.register_blueprint(sectors_bp)
+    app.register_blueprint(problems_bp)
     # app.register_blueprint(states_bp)
     # app.register_blueprint(states_bp)
 
