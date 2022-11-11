@@ -32,7 +32,6 @@ class AreaSchema(ma.Schema):
 
     sectors = fields.List(fields.Nested("SectorSchema", exclude=["problems"]))
 
-
     class Meta:
     # Fields to expose
         fields = ("area_id", "area_name", "description", "ethics", "access", 

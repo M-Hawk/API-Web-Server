@@ -18,7 +18,7 @@ class Problem(db.Model):
     sector_id = db.Column(db.Integer, db.ForeignKey("sectors.sector_id"), nullable=False)
 
     sector = db.relationship("Sector", back_populates="problems")
-    # ascents = db.relationship("Ascent", back_populates="problem", cascade="all, delete")
+    ascents = db.relationship("Ascent", back_populates="problem", cascade="all, delete")
 
     @hybrid_property
     def v_grade (self):
@@ -30,7 +30,7 @@ class Problem(db.Model):
 
 class ProblemSchema(ma.Schema):
 
-    # ascents = fields.List(fields.Nested("AscentSchema", exclude=["problem_id", "problem"]))
+    ascents = fields.List(fields.Nested("AscentSchema", exclude=["ascent_id", "problem"]))
 
     class Meta:
     # Fields to expose

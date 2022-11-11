@@ -29,7 +29,7 @@ class Sector(db.Model):
 
 class SectorSchema(ma.Schema):
 
-    problems = fields.List(fields.Nested("ProblemSchema"))
+    problems = fields.List(fields.Nested("ProblemSchema", exclude=["ascents"]))
 
     class Meta:
     # Fields to expose
