@@ -49,7 +49,6 @@ def create_sector():
     # Respond to admin client
     return SectorSchema().dump(sector), 201
 
-
 # The DELETE route endpoint
 # Allows a single sector to be deleted by its id
 @sectors_bp.route("/delete/<int:id>/", methods=["DELETE"])
