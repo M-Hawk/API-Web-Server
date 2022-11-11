@@ -9,6 +9,7 @@ sectors_bp = Blueprint("sectors", __name__, url_prefix="/sectors")
 
 # Gets all the sectors in the database and their respective problems
 @sectors_bp.route("/", methods=["GET"])
+# @jwt_required()
 def get_sectors():
     selection = db.select(Sector).order_by(Sector.sector_id)
     sectors = db.session.scalars(selection)
@@ -16,6 +17,7 @@ def get_sectors():
 
 # Gets an sector by its given ID in the database, or returns a 404 error if it does not exist
 @sectors_bp.route("/id/<int:id>/", methods=["GET"])
+# @jwt_required()
 def get_one_sector(id):
     selection = db.select(Sector).filter_by(sector_id=id)
     sector = db.session.scalar(selection)
@@ -27,9 +29,10 @@ def get_one_sector(id):
 
 # The POST route endpoint
 # ADD VALIDATION FOR POSTING SECTORS, MUST CONFORM TO NAMING CONVENTION
-@sectors_bp.route("/create/", methods=["POST"])
+@sectors_bp.route("/", methods=["POST"])
 # @jwt_required()
 def create_sector():
+    #authorize()
     # Create a new Sector model instance
     info = SectorSchema().load(request.json)
 
@@ -49,9 +52,27 @@ def create_sector():
     # Respond to admin client
     return SectorSchema().dump(sector), 201
 
+@sectors_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
+# @jwt_required()
+def update_one_sector(id):
+    # authorize()
+    selection = db.select(Sector).filter_by(sector_id=id)
+    sector = db.session.scalar(selection)
+    if sector:
+        sector.sector_name = request.json.get("sector_name") or sector.sector_name
+        sector.description = request.json.get("description") or sector.description
+        sector.access = request.json.get("access") or sector.access
+        sector.latitude = request.json.get("latitude") or sector.latitude
+        sector.longitude = request.json.get("longitude") or sector.longitude
+        db.session.commit()      
+        return SectorSchema().dump(sector)
+    else:
+        return {'error': f'Sector not found with id {id}'}, 404
+
+
 # The DELETE route endpoint
 # Allows a single sector to be deleted by its id
-@sectors_bp.route("/delete/<int:id>/", methods=["DELETE"])
+@sectors_bp.route("/<int:id>/", methods=["DELETE"])
 #@jwt_required()
 def delete_one_sector(id):
     # sort this authorize func in auth controller later

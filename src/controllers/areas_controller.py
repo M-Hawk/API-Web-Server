@@ -9,13 +9,15 @@ areas_bp = Blueprint("areas", __name__, url_prefix="/areas")
 
 # Gets all the areas in the database and their respective sectors
 @areas_bp.route("/", methods=["GET"])
+# @jwt_required()
 def get_areas():
     selection = db.select(Area).order_by(Area.area_id)
     areas = db.session.scalars(selection)
     return AreaSchema(many=True).dump(areas)
 
 # Gets an area by its given ID in the database, or returns a 404 error if it does not exist
-@areas_bp.route("/id/<int:id>/", methods=["GET"])
+@areas_bp.route("/int:id>/", methods=["GET"])
+# @jwt_required()
 def get_one_area(id):
     selection = db.select(Area).filter_by(area_id=id)
     area = db.session.scalar(selection)
@@ -27,9 +29,10 @@ def get_one_area(id):
 
 # The POST route endpoint
 # ADD VALIDATION FOR POSTING AREAS, MUST CONFORM TO NAMING CONVENTION
-@areas_bp.route("/create/", methods=["POST"])
+@areas_bp.route("/", methods=["POST"])
 # @jwt_required()
 def create_area():
+    #authorize()
     # Create a new Area model instance
     info = AreaSchema().load(request.json)
 
@@ -50,10 +53,27 @@ def create_area():
     # Respond to admin client
     return AreaSchema().dump(area), 201
 
+@areas_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
+# @jwt_required()
+def update_one_area(id):
+    # authorize()
+    selection = db.select(Area).filter_by(area_id=id)
+    area = db.session.scalar(selection)
+    if area:
+        area.area_name = request.json.get("area_name") or area.area_name
+        area.description = request.json.get("description") or area.description
+        area.ethics = request.json.get("ethics") or area.ethics
+        area.access = request.json.get("access") or area.access
+        area.latitude = request.json.get("latitude") or area.latitude
+        area.longitude = request.json.get("longitude") or area.longitude
+        db.session.commit()      
+        return AreaSchema().dump(area)
+    else:
+        return {'error': f'Area not found with id {id}'}, 404
 
 # The DELETE route endpoint
 # Allows a single area to be deleted by its id
-@areas_bp.route("/delete/<int:id>/", methods=["DELETE"])
+@areas_bp.route("/int:id>/", methods=["DELETE"])
 #@jwt_required()
 def delete_one_area(id):
     # sort this authorize func in auth controller later

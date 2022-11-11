@@ -6,8 +6,8 @@ from models.states import State
 from models.areas import Area
 from models.sectors import Sector
 from models.problems import Problem
-# from models.climbers import Climber
-# from models.ascents import Ascent
+from models.climbers import Climber
+from models.ascents import Ascent
 
 db_commands = Blueprint("db", __name__)
 
@@ -199,43 +199,44 @@ def seed_db():
     db.session.add_all(problems)
     db.session.commit()
 
-    # climbers = [
-    #     Climber(
-    #         user_name = "Jimbo",
-    #         password = "mrworldwide123",
-    #         first_name = "Jim",
-    #         last_name = "Rules",
-    #         email_address = "boulderingarchitect@legends.com",
-    #         admin = True,
-    #         created = date.today()   
-    #     ),
-    #     Climber(
-    #         user_name = "Pyscho",
-    #         password = "oneofmyfavourites567",
-    #         first_name = "Michael",
-    #         last_name = "Bateman",
-    #         email_address = "nicecards@fineprint.com",
-    #         admin = False,
-    #         created = date.today()   
-    #     )
-    # ]
+    climbers = [
+        Climber(
+            user_name = "Jimbo",
+            password = "mrworldwide123",
+            first_name = "Jim",
+            last_name = "Rules",
+            email_address = "boulderingarchitect@legends.com",
+            admin = True,
+            created = date.today()   
+        ),
+        Climber(
+            user_name = "Pyscho",
+            password = "oneofmyfavourites567",
+            first_name = "Michael",
+            last_name = "Bateman",
+            email_address = "nicecards@fineprint.com",
+            admin = False,
+            created = date.today()   
+        )
+    ]
 
-    # db.session.add_all(climbers)
-    # db.session.commit()
+    db.session.add_all(climbers)
+    db.session.commit()
 
-    # ascents = [
-    #     Ascent(
-    #         climber_id = climbers[0],
-    #         problem_id = problems[2],
-    #         tick_type = "flash", # varchar (create tuples of tick types)
-    #         comments = "Lucky catch on the dyno, got it first go",
-    #         created = date.today()
-    #     )
-    # ]
+    ascents = [
+        Ascent(
+            climber = climbers[0],
+            problem = problems[2],
+            tick_type = "flash", # varchar (create tuples of tick types)
+            comments = "Lucky catch on the dyno, got it first go",
+            created = date.today()
+        )
+    ]
 
-    # db.session.add_all(ascents)
-    # db.session.commit()
+    db.session.add_all(ascents)
+    db.session.commit()
 
 
 
     print("Tables seeded")
+
