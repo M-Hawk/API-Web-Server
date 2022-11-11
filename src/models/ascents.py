@@ -12,8 +12,8 @@
 #     climber_id = db.Column(db.Integer, db.ForeignKey("climbers.climber_id"), nullable=False)
 #     problem_id = db.Column(db.Integer, db.ForeignKey("problems.problem_id"), nullable=False)
 
-#     problem = db.relationship("Problem", back_populates="ascents")
-#     climber = db.relationship("Climber", back_populates="ascent", cascade="all, delete")
+#     # problem = db.relationship("Problem", back_populates="ascents")
+#     # climber = db.relationship("Climber", back_populates="ascents")
 
 # class AscentSchema(ma.Schema):
 

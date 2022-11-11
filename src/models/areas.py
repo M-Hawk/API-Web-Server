@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from sqlalchemy.ext.hybrid import hybrid_property
 
 class Area(db.Model):
     __tablename__= "areas"
@@ -18,12 +19,22 @@ class Area(db.Model):
     state = db.relationship("State", back_populates="areas")
     sectors = db.relationship("Sector", back_populates="area", cascade="all, delete")
 
+    @hybrid_property
+    def latitude_south (self):
+        return f"{self.latitude} South"
+
+    @hybrid_property
+    def longitude_east (self):
+        return f"{self.longitude} East"
+    
+
 class AreaSchema(ma.Schema):
 
-    state = fields.Nested("StateSchema", only=["state_name"])
+    sectors = fields.List(fields.Nested("SectorSchema", exclude=["problems"]))
+
 
     class Meta:
     # Fields to expose
-        fields = ("area_id", "area_name", "state_id", "state", "description", "ethics", "access", 
-        "latitude", "longitude", "created")
+        fields = ("area_id", "area_name", "description", "ethics", "access", 
+        "latitude_south", "longitude_east", "sectors")
         ordered = True

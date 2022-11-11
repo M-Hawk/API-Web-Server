@@ -16,11 +16,11 @@ class State(db.Model):
 class StateSchema(ma.Schema):
 
     # allows areas to be JSON serializable when get request is sent for states list
-    areas = fields.List(fields.Nested("AreaSchema", exclude=["state_id", "state"]))
+    areas = fields.List(fields.Nested("AreaSchema", exclude=["sectors"]))
 
     class Meta:
         # Fields to expose
-        fields = ("state_id", "state_name", "state_acronym", "areas", "created")
+        fields = ("state_id", "state_name", "state_acronym", "areas")
         ordered = True
 
 
