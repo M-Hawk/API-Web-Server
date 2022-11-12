@@ -2,22 +2,32 @@ from flask import Blueprint, request
 from init import db
 from datetime import date
 from models.sectors import Sector, SectorSchema
+from controllers.auth_controller import authorize
+from flask_jwt_extended import jwt_required
+from sqlalchemy.exc import IntegrityError, DataError
 
 sectors_bp = Blueprint("sectors", __name__, url_prefix="/sectors")
 
 # The GET routes endpoints
 
-# Gets all the sectors in the database and their respective problems
+# WORKS COMPLETELY 
+'''
+Route that allows a climber to get a list of all sectors and their respective problems
+'''
 @sectors_bp.route("/", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_sectors():
     selection = db.select(Sector).order_by(Sector.sector_id)
     sectors = db.session.scalars(selection)
     return SectorSchema(many=True).dump(sectors)
 
-# Gets an sector by its given ID in the database, or returns a 404 error if it does not exist
-@sectors_bp.route("/id/<int:id>/", methods=["GET"])
-# @jwt_required()
+# WORKS COMPLETELY 
+
+'''
+Route that allows a climber to get a sector by its given ID
+'''
+@sectors_bp.route("/<int:id>/", methods=["GET"])
+@jwt_required()
 def get_one_sector(id):
     selection = db.select(Sector).filter_by(sector_id=id)
     sector = db.session.scalar(selection)
@@ -28,55 +38,77 @@ def get_one_sector(id):
 
 
 # The POST route endpoint
-# ADD VALIDATION FOR POSTING SECTORS, MUST CONFORM TO NAMING CONVENTION
+
+# WORKS COMPLETELY 
+
+'''
+Route that allows an admin to create a new Sector
+'''
 @sectors_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_sector():
-    #authorize()
-    # Create a new Sector model instance
-    info = SectorSchema().load(request.json)
+    authorize()
+    try:
+        info = SectorSchema().load(request.json)
+        sector = Sector(
+            area_id = info["area_id"],
+            sector_name = info["sector_name"],
+            description = request.json.get("description"),
+            access = request.json.get("access"),
+            latitude = info["latitude_south"],
+            longitude = info["longitude_east"],
+            created = date.today()
+            )
+        db.session.add(sector)
+        db.session.commit()
+        return SectorSchema().dump(sector), 201
+    except IntegrityError:
+        return {"error": "Area ID given is not in available areas"}, 409
+    except DataError:
+        return {"error": "Area ID given is not in available areas"}, 409
 
-    # Information for the new sector
-    sector = Sector(
-        area_id = info["area_id"],
-        sector_name = info["sector_name"],
-        description = info["description"],
-        access = info["access"],
-        latitude = info["latitude"],
-        longitude = info["longitude"],
-        created = date.today()
-        )
-    # Add and commit sector to DB
-    db.session.add(sector)
-    db.session.commit()
-    # Respond to admin client
-    return SectorSchema().dump(sector), 201
 
-@sectors_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
-# @jwt_required()
+# The PUT/PATCH route endpoint
+
+# WORKS COMPLETELY
+'''
+Route that allows an admin to change a sectors details
+'''
+@sectors_bp.route("/<int:id>/", methods=["PUT", "PATCH"])
+@jwt_required()
 def update_one_sector(id):
-    # authorize()
+    authorize()
     selection = db.select(Sector).filter_by(sector_id=id)
     sector = db.session.scalar(selection)
     if sector:
-        sector.sector_name = request.json.get("sector_name") or sector.sector_name
-        sector.description = request.json.get("description") or sector.description
-        sector.access = request.json.get("access") or sector.access
-        sector.latitude = request.json.get("latitude") or sector.latitude
-        sector.longitude = request.json.get("longitude") or sector.longitude
-        db.session.commit()      
-        return SectorSchema().dump(sector)
+        try:
+            info = SectorSchema().load(request.json)
+            sector.area_id = info["area_id"] or sector.area_id
+            sector.sector_name =  info["sector_name"] or sector.sector_name
+            sector.description = request.json.get("description") or sector.description
+            sector.access = request.json.get("access") or sector.access
+            sector.latitude =  info["latitude_south"] or sector.latitude
+            sector.longitude =  info["longitude_east"] or sector.longitude
+            db.session.commit()      
+            return SectorSchema().dump(sector)
+        except IntegrityError:
+            return {"error": "Area ID given is not in available areas"}, 409
+        except DataError:
+            return {"error": "Area ID given is not in available areas"}, 409
     else:
-        return {'error': f'Sector not found with id {id}'}, 404
+        return {"error": f"Sector not found with id {id}"}, 404
 
 
 # The DELETE route endpoint
-# Allows a single sector to be deleted by its id
+
+# WORKS COMPLETELY
+'''
+Route that allows an admin to delete a sector
+'''
 @sectors_bp.route("/<int:id>/", methods=["DELETE"])
-#@jwt_required()
+@jwt_required()
 def delete_one_sector(id):
-    # sort this authorize func in auth controller later
-    #authorize()
+    authorize()
     selection = db.select(Sector).filter_by(sector_id=id)
     sector = db.session.scalar(selection)
     if sector:
