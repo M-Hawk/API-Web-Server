@@ -1,14 +1,14 @@
 from init import db, ma
-from marshmallow import fields
+from marshmallow import fields, validates
+from marshmallow.validate import OneOf
+from marshmallow.exceptions import ValidationError
 
-# VALID_TICK_TYPES = ("Send", "Dab", "Repeat", "Onsight", "Flash", "Redpoint", "First Ascent", "Attempt", "Working", "Retreat")
-
+VALID_TICK_TYPES = ("Send", "Dab", "Repeat", "Onsight", "Flash", "Redpoint", "First Ascent", "Attempt", "Working", "Retreat")
 
 class Ascent(db.Model):
     __tablename__= "ascents"
-    # Created table attributes using imported db object
     ascent_id = db.Column(db.Integer, primary_key=True)
-    tick_type = db.Column(db.String(50)) # varchar (create tuples of tick types)
+    tick_type = db.Column(db.String, nullable=False, default=VALID_TICK_TYPES[0])
     comments = db.Column(db.Text)
     created = db.Column(db.Date)
 
@@ -20,10 +20,14 @@ class Ascent(db.Model):
 
 class AscentSchema(ma.Schema):
 
-    problem = fields.Nested("ProblemSchema", only=["problem_id", "problem_name"])
+    problem = fields.Nested("ProblemSchema", only=["problem_id", "problem_name", "v_grade"])
     climber = fields.Nested("ClimberSchema", only=["climber_id", "user_name"])
+
+    tick_type = fields.String(load_default=VALID_TICK_TYPES[0], validate=OneOf(VALID_TICK_TYPES))
 
     class Meta:
     # Fields to expose
         fields = ("ascent_id", "climber", "problem", "tick_type", "comments", "created")
         ordered = True
+
+
