@@ -6,7 +6,7 @@ from marshmallow.validate import Length, And, Regexp
 class Area(db.Model):
     __tablename__= "areas"
     area_id = db.Column(db.Integer, primary_key=True)
-    area_name = db.Column(db.String(50), nullable=False) # varchar
+    area_name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text)
     ethics = db.Column(db.Text)
     access = db.Column(db.Text)

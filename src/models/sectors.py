@@ -5,7 +5,6 @@ from marshmallow.validate import Length, And, Regexp
 
 class Sector(db.Model):
     __tablename__= "sectors"
-    # Created table attributes using imported db object
     sector_id = db.Column(db.Integer, primary_key=True)
     sector_name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text)
