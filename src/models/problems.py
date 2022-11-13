@@ -5,10 +5,9 @@ from marshmallow.validate import Length, And, Regexp
 
 class Problem(db.Model):
     __tablename__= "problems"
-    # Created table attributes using imported db object
     problem_id = db.Column(db.Integer, primary_key=True)
     problem_name = db.Column(db.String(50), nullable=False)
-    grade = db.Column(db.Integer) # Either add list of tuples or ensure V interpolated in front
+    grade = db.Column(db.Integer) 
     surface_type = db.Column(db.String(50))
     description = db.Column(db.Text)
     access = db.Column(db.Text)
@@ -35,7 +34,7 @@ class ProblemSchema(ma.Schema):
 
     v_grade = fields.String(validate=And(
         Length(min=1, max=2, error="Grade must be atleast 1 digit long, and no greater than 25 on the V Scale"),
-        Regexp("^[0-9]|1[0-9]|2[0-5]$", error="Only integer numbers should be entered up to 25")
+        Regexp("^([0-9]|1[0-9]|2[0-5])$", error="Only integer numbers should be entered up to 25")
     ))
     height = fields.String(validate=And(
         Length(min=1, max=1, error="Height must be atleast 1 digit long, and no greater than 9 metres"),
@@ -48,7 +47,6 @@ class ProblemSchema(ma.Schema):
     ))
 
     class Meta:
-    # Fields to expose
         fields = ("problem_id", "problem_name", "v_grade", "surface_type", "description", 
         "access", "height", "comments", "sector_id", "ascents")
         ordered = True

@@ -26,7 +26,6 @@ class AscentSchema(ma.Schema):
     tick_type = fields.String(load_default=VALID_TICK_TYPES[0], validate=OneOf(VALID_TICK_TYPES))
 
     class Meta:
-    # Fields to expose
         fields = ("ascent_id", "climber", "problem", "tick_type", "comments", "created")
         ordered = True
 

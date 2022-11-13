@@ -1,9 +1,9 @@
 from init import db, ma
 from marshmallow import fields
-from marshmallow.validate import Length, And, Regexp
+from marshmallow.validate import OneOf, Length, And, Regexp 
+
 class Climber(db.Model):
     __tablename__= "climbers"
-    # Created table attributes using imported db object
     climber_id = db.Column(db.Integer, primary_key=True)
     admin = db.Column(db.Boolean(), default=False)
     user_name = db.Column(db.String(100), nullable=False, unique=True)
@@ -29,7 +29,7 @@ class ClimberSchema(ma.Schema):
         Regexp("^[a-zA-Z0-9 ]+$", error="Only letters, numbers and spaces are allowed")
     ))
     password = fields.String(required=True, validate=And(
-        Length(min=8, error="Password must be at least 8 characters long"),
+        Length(min=8, error="Password must be at least 8 characters long and preferably contain letters and numbers"),
         Regexp("^[a-zA-Z0-9 ]+$", error="Only letters, numbers and spaces are allowed")
     ))
     first_name = fields.String(required=True, validate=And(
@@ -40,8 +40,8 @@ class ClimberSchema(ma.Schema):
         Length(min=1, max=80, error="Last Name must be at least 1 character long"),
         Regexp("^[a-zA-Z0-9 ]+$", error="Only letters, numbers and spaces are allowed")
     ))
+
     class Meta:
-    # Fields to expose
         fields = ("climber_id", "admin", "user_name", "password", "first_name", "last_name", 
         "email_address", "ascents")
         ordered = True

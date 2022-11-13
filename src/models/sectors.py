@@ -7,7 +7,7 @@ class Sector(db.Model):
     __tablename__= "sectors"
     # Created table attributes using imported db object
     sector_id = db.Column(db.Integer, primary_key=True)
-    sector_name = db.Column(db.String(50), nullable=False) # varchar
+    sector_name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text)
     access = db.Column(db.Text)
     latitude = db.Column(db.Float(precision=6))
@@ -48,7 +48,6 @@ class SectorSchema(ma.Schema):
     ))
 
     class Meta:
-    # Fields to expose
         fields = ("sector_id", "sector_name", "description", "access", 
         "latitude_south", "longitude_east", "area_id", "problems")
         ordered = True

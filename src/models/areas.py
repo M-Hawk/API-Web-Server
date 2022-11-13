@@ -5,7 +5,6 @@ from marshmallow.validate import Length, And, Regexp
 
 class Area(db.Model):
     __tablename__= "areas"
-    # Created table attributes using imported db object
     area_id = db.Column(db.Integer, primary_key=True)
     area_name = db.Column(db.String(50), nullable=False) # varchar
     description = db.Column(db.Text)
@@ -49,7 +48,6 @@ class AreaSchema(ma.Schema):
     ))
 
     class Meta:
-    # Fields to expose
         fields = ("area_id", "area_name", "description", "ethics", "access", 
         "latitude_south", "longitude_east", "state_id", "sectors")
         ordered = True

@@ -4,7 +4,6 @@ from marshmallow.validate import Length, And, Regexp
 
 class State(db.Model):
     __tablename__= "states"
-    # Created table attributes using imported db object
     state_id = db.Column(db.Integer, primary_key=True)
     state_name = db.Column(db.String(50), nullable=False)
     state_acronym = db.Column(db.String(10), nullable=False)
