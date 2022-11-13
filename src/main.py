@@ -11,10 +11,8 @@ from marshmallow.exceptions import ValidationError
 import os
 
 def create_app():
-    # using a list comprehension and multiple assignment 
-    # to grab the environment variables we need
     
-    # Creating the flask app object - this is the core of our app!
+    # Creating the flask app object
     app = Flask(__name__)
 
     @app.errorhandler(ValidationError)
@@ -36,14 +34,6 @@ def create_app():
     @app.errorhandler(KeyError)
     def key_error(err):
         return {'error': f'The field {err} is required.'}, 400
-
-    
-
-
-    # import the controllers and activate the blueprints
-
-    # app.register_blueprint(cards_bp)
-    # app.register_blueprint(auth_bp)
 
     # prevents dict keys lists from auto ordering by alphabet and follows marshmallow ordering
     app.config ["JSON_SORT_KEYS"] = False
