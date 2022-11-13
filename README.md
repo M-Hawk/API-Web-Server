@@ -1,8 +1,9 @@
 # Bouldering API
 
+[GitHub Repository](https://github.com/M-Hawk/API-Web-Server)
 ## About
 
-Many Australian rock climbers and specifically boulderers are eager to record what they have achieved in their climbing career or hobby by logging ascents of particular problems and historic routes.
+Many Australian rock climbers and specifically boulderers are eager to record what they have achieved in their climbing career, or hobby by logging ascents of particular problems and historic routes.
 
 This is done to not only measure their success over time, but also demonstrate their skillset. It also acts as a way to communicate certain nuances of a particular climb and its perceived grading or difficulty to other members of the climbing community.
 
@@ -79,7 +80,230 @@ ORM's add another layer of protection against SQL injection by reducing explicit
 
 ## Third Party Services
 
+These third party services were utilised in the production of this API
+
+### Flask
+
+Flask is a micro WSGI web app framework in Python. It allows architecture to be implemented without much boiler plate code, aswell as providing a decent amount of resources for development.
+
+### SQL Alchemy
+
+SQL Alchemy is a Python toolkit and Object Relational Mapper (ORM) that allows developers to utilise and access SQL Databases, using a connection capability called psycopg2.
+
+### Flask-SQLAlchemy
+
+This Service allows Flask to be utilised using the ORM SQL Alchemy library for effective SQL management.
+
+### Marshmallow
+
+Marshmallow is an ORM Python framework-agnostic library for converting complex datatypes, such as objects, to and from native Python datatypes.
+It has a extensive library for utilising Schemas and model relations aswell as providing excellent JSON displays.
+
+### Flask-Marshmallow
+
+It is a minor integration layer for Flask to add marshmallow features to Flask.
+
+### Marshmallow-SQLAlchemy
+
+Integrates Marshmallow and SQLAlchemy, allows SQLAlchemy to utilise Marshmallow's d,serialisation libraries.
+
+### JWT
+
+JSON Web Tokens are an industry standard authentication token service for Web Applications, that allows the secure transmission of data between entities over the internet. It uses a secret key algorithm to serialize and deserialize the token information.
+
+### BCrypt
+
+BCrypt is a password hashing function that protects against malicious attacks. And uses a SHA-256-based hash algorithm to encode passwords.
+
 ## Models & Relationships
+
+The models used replicate data from the given ERD and uses python data types through SQL Alchemy to achieve an accurate representation of the expected data in SQL.
+
+Each primary key provided in every entities model is an automatic serialised sequence when the creation of an object entity occurs. Every model that has a foreign key associated must reference the primary key of its expected corresponding model.
+
+Inclusions in entities model attributes:
+
+1. *nullable=False* if a model contains nullable equal false property, that attribute must be given when creating that model object
+2. *unique=True* if a model contains unique equals true, any other model of the same object type must have a different given entry, which also must be unique
+3. *primary_key=True* The attribute that contains this is the primary key that other models reference with their foreign keys
+4. *db.ForeignKey("object.primary_key")* If an attribute contains this its foreign key relates to another models primary key
+5. *back_populates = "object"* the object that a relation is bound to
+6. *cascade="all, delete"* provided in the relationship keyword, if this is set, the objects that related to the instance of the object defined in back_populates will all be deleted. This prevents data corruption.
+
+Marshmallow Schemas utilise the given data from the models to interact with the user requests, validate incoming data and provides the ability to create effective responses to be formatted and given back to the user.
+
+The fields variable represents all the information from the given model to be validated and represented as the JSON request and reponse. The ordered keyword determines that the fields will be displayed in the listed order.
+
+### **Climbers**
+
+The Climbers model has a relationship with the Ascents model, many ascents can reference a climber and if a climber object is deleted so too will its related Ascents. It also has the Boolean Admin which gives certain rights to perform particular operations within the database.
+
+**Model**
+
+1. *climber_id* = db.Column(db.Integer, primary_key=True)
+2. *admin* = db.Column(db.Boolean(), default=False)
+3. *user_name* = db.Column(db.String(100), nullable=False, unique=True)
+4. *password* = db.Column(db.String, nullable=False)
+5. *first_name* = db.Column(db.String(50), nullable=False)
+6. *last_name* = db.Column(db.String(80), nullable=False)
+7. *email_address* = db.Column(db.String, nullable=False, unique=True)
+8. *created* = db.Column(db.Date)
+9. *ascents* = db.relationship("Ascent", back_populates = "climber", cascade="all, delete")
+
+**Schema**
+
+When a climber schema is presented as a JSON response, it includes the Schema of the Ascents model that is related to it via its foreign key and displays that information. It notably also excludes climber to prevent a nested climber schema of the same climber from being displayed.
+
+1. *ascents* = fields.List(fields.Nested("AscentSchema", exclude=["climber"]))
+2. *fields* = ("climber_id", "admin", "user_name", "password", "first_name", "last_name", "email_address", "ascents")
+
+### **Ascents**
+
+The Ascent model is related to climbers and problems through its foreign keys.
+
+**Model**
+
+1. *ascent_id* = db.Column(db.Integer, primary_key=True)
+2. *tick_type* = db.Column(db.String, nullable=False, default=VALID_TICK_TYPES[0])
+3. *comments* = db.Column(db.Text)
+4. *created* = db.Column(db.Date)
+5. *climber_id* = db.Column(db.Integer, db.ForeignKey("climbers.climber_id"), nullable=False)
+6. *problem_id* = db.Column(db.Integer, db.ForeignKey("problems.problem_id"), nullable=False)
+7. *problem* = db.relationship("Problem", back_populates="ascents")
+8. *climber* = db.relationship("Climber", back_populates="ascents")
+
+**Schema**
+
+When an Ascents schema is presented as a JSON response, it includes the Schemas of the Climbers and Problems models that are related to it via its foreign keys and displays that information.
+
+1. *problem* = fields.Nested("ProblemSchema", only=["problem_id", "problem_name", "v_grade"])
+2. *climber* = fields.Nested("ClimberSchema", only=["climber_id", "user_name"])
+3. *fields* = ("ascent_id", "climber", "problem", "tick_type", "comments", "created")
+
+### **Problems**
+
+The Problem model is related to ascents through ascents foreign key, and sectors its own foreign key.  A problem model can have many ascents and a sector can have many problems.
+
+It also contains hybrid_properties that interpolate strings onto the given data type for JSON requests and responses.
+
+**Model**
+
+1. *problem_id* = db.Column(db.Integer, primary_key=True)
+2. *problem_name* = db.Column(db.String(50), nullable=False)
+3. *grade* = db.Column(db.Integer)
+4. *surface_type* = db.Column(db.String(50))
+5. *description* = db.Column(db.Text)
+6. *access* = db.Column(db.Text)
+7. *height_metres* = db.Column(db.Integer)
+8. *comments* = db.Column(db.Text)
+9. *created* = db.Column(db.Date)
+10. *sector_id* = db.Column(db.Integer, db.ForeignKey("sectors.sector_id"), nullable=False)
+11. *sector* = db.relationship("Sector", back_populates="problems")
+12. *ascents* = db.relationship("Ascent", back_populates="problem", cascade="all, delete")
+
+@hybrid_property
+def v_grade (self):
+    return f"V{self.grade}"
+
+@hybrid_property
+def height (self):
+    return f"{self.height_metres} Metres"
+
+**Schema**
+
+When an Problem schema is presented as a JSON response, it includes the Schemas of the Ascents linked to its model and that ascents climber which is nested.
+
+1. *ascents* = fields.List(fields.Nested("AscentSchema", exclude=["ascent_id", "problem"]))
+2. *fields* = ("problem_id", "problem_name", "v_grade", "surface_type", "description", "access", "height", "comments", "sector_id", "ascents")
+
+### **Sectors**
+
+The Sector model is related to problems through its foreign key. A sector model can belong to an area and a sector can have many problems.
+
+It contains hybrid_properties that interpolate strings onto the given data type for giving accurate latitude and longitude information for Australian Users in the JSON requests and responses.
+
+**Model**
+
+1. *sector_id* = db.Column(db.Integer, primary_key=True)
+2. *sector_name* = db.Column(db.String(50), nullable=False)
+3. *description* = db.Column(db.Text)
+4. *access* = db.Column(db.Text)
+5. *latitude* = db.Column(db.Float(precision=6))
+6. *longitude* = db.Column(db.Float(precision=6))
+7. *created* = db.Column(db.Date)
+8. *area_id* = db.Column(db.Integer, db.ForeignKey("areas.area_id"), nullable=False)
+9. *area* = db.relationship("Area", back_populates="sectors")
+10. *problems* = db.relationship("Problem", back_populates="sector", cascade="all, delete")
+
+@hybrid_property
+def latitude_south (self):
+    return f"{self.latitude} South"
+
+@hybrid_property
+def longitude_east (self):
+    return f"{self.longitude} East"
+
+**Schema**
+
+When an Sector schema is presented as a JSON response, it includes the Schemas of the Problems linked to its model and excludes the ascents of those problems in the problems model.
+
+1. *problems* = fields.List(fields.Nested("ProblemSchema", exclude=["ascents"]))
+2. *fields* = ("sector_id", "sector_name", "description", "access", 
+        "latitude_south", "longitude_east", "area_id", "problems")
+
+### **Areas**
+
+The Areas model is related to the sectors model through its foreign key. An area model can belong to a state and a area can have many sectors.
+
+It contains the same hybrid_properties as sectors for latitude and longitude that interpolate strings onto the given data type for JSON requests and responses.
+
+**Model**
+
+1. *area_id* = db.Column(db.Integer, primary_key=True)
+2. *area_name* = db.Column(db.String(50), nullable=False)
+3. *description* = db.Column(db.Text)
+4. *ethics* = db.Column(db.Text)
+5. *access* = db.Column(db.Text)
+6. *latitude* = db.Column(db.Float(precision=6))
+7. *longitude* = db.Column(db.Float(precision=6))
+8. *created* = db.Column(db.Date)
+9. *state_id* = db.Column(db.Integer, db.ForeignKey("states.state_id"), nullable=False)
+10. *state* = db.relationship("State", back_populates="areas")
+11. *sectors* = db.relationship("Sector", back_populates="area", cascade="all, delete")
+
+@hybrid_property
+def latitude_south (self):
+    return f"{self.latitude} South"
+
+@hybrid_property
+def longitude_east (self):
+    return f"{self.longitude} East"
+
+**Schema**
+
+When an Area schema is presented as a JSON response, it includes the Schemas of the Sectors linked to its model and excludes the problems of those sectors in the problems model.
+
+1. *sectors* = fields.List(fields.Nested("SectorSchema", exclude=["problems"])))
+2. *fields* = ("area_id", "area_name", "description", "ethics", "access", "latitude_south", "longitude_east", "state_id", "sectors")
+
+### **States**
+
+The States model is related to the areas model through its foreign key. An state model can have many areas and is the parent of all other entities in the model relationship. Excluding the climber users.
+
+**Model**
+
+1. *state_id* = db.Column(db.Integer, primary_key=True)
+2. *state_name* = db.Column(db.String(50), nullable=False)
+3. *state_acronym* = db.Column(db.String(10), nullable=False)
+4. *created* = db.Column(db.Date)
+5. *areas* = db.relationship("Area", back_populates="state", cascade="all, delete")
+
+**Schema**
+
+When an State schema is presented as a JSON response, it includes the Schemas of the Areas linked to its model and excludes the problems of those areas in the problems model.
+
+1. *areas* = fields.List(fields.Nested("AreaSchema", exclude=["state_id", "sectors"]))
+2. *fields* = ("state_id", "state_name", "state_acronym", "areas")
 
 ## Database Relations
 
@@ -182,7 +406,7 @@ During the project planning stage it was determined that production would be bro
 
 **Idea**
 
-The Aim of this project is to provide better access for Australian Rock Climbers, and in particular those who participate in the style of Bouldering to be able to have access to a tracking system, that logs their climbing and achievements as well as giving them the ability to access a database of information relating to the routes or problems, by seeking information on locations, difficulty and other pertinent information relevant to a particular route, and giving them the ability to add additional routes to the database for the benefit of all.
+The Aim of this project is to provide better access for Australian Rock Climbers, and in particular those who participate in the style of Bouldering to be able to have access to a tracking system, that logs their climbing and achievements as well as giving them the ability to access a database of information relating to the routes or problems, by seeking information on locations, difficulty and other pertinent information relevant to a particular route.
 
 The database is aimed to be mananged by members of the climbing community who have administration rights to ensure quality data integrity and resolve and issues that may arise.
 
@@ -265,6 +489,8 @@ Maintenance will be conducted at regular intervals by administrators utilising t
 Add photos of trello board here
 
 ![Early Stage Trello Board](/docs/Early%20Stage%20Trello%20Board.png)
+![Middle Stage Trello Board](/docs/Trello%20Board%20Three.png)
+![Completed Trello Board](/docs/Trello%20Board%20Complete.png)
 
 ## Setup Requirements
 
@@ -277,10 +503,6 @@ Add photos of trello board here
 * Test data is located under controllers/cli_commands.py
 * flask db drop && flask db create && flask db seed
 * test endpoints using  https://www.postman.com/
-
-### IP Address
-
-* http://127.0.0.1:8080
 
 ## Author
 
