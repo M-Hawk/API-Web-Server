@@ -7,10 +7,8 @@ from flask_jwt_extended import jwt_required
 
 states_bp = Blueprint("states", __name__, url_prefix="/states")
 
-
 # The GET routes endpoints
-
-# WORKS COMPLETELY 
+ 
 '''
 Route that allows a climber to get a list of all states and their respective areas
 '''
@@ -21,7 +19,7 @@ def get_states():
     states = db.session.scalars(selection)
     return StateSchema(many=True).dump(states)
 
-# WORKS COMPLETELY 
+ 
 '''
 Route that allows a climber to get a state by its given ID
 '''
@@ -37,8 +35,6 @@ def get_one_state(id):
 
 
 # The POST route endpoint
-
-# WORKS COMPLETELY
 
 '''
 Route that allows an admin to post a state
@@ -58,8 +54,6 @@ def create_state():
     return StateSchema().dump(state), 201
 
 # The PUT/PATCH route endpoint
-
-# WORKS COMPLETELY
 
 '''
 Route that allows an admin to change a states details
@@ -82,8 +76,6 @@ def update_one_state(id):
 
 # The DELETE route endpoint
 
-# WORKS COMPLETELY
-
 '''
 Route that allows an admin to delete a state
 '''
@@ -96,6 +88,6 @@ def delete_one_state(id):
     if state:
         db.session.delete(state)
         db.session.commit()
-        return {"message": f"State {state.state_name} has been deleted successfully"}
+        return {"message": f"State, {state.state_name} has been deleted successfully"}
     else:
         return {"error": f"State not found with id {id}"}, 404

@@ -10,7 +10,6 @@ sectors_bp = Blueprint("sectors", __name__, url_prefix="/sectors")
 
 # The GET routes endpoints
 
-# WORKS COMPLETELY 
 '''
 Route that allows a climber to get a list of all sectors and their respective problems
 '''
@@ -20,8 +19,7 @@ def get_sectors():
     selection = db.select(Sector).order_by(Sector.sector_id)
     sectors = db.session.scalars(selection)
     return SectorSchema(many=True).dump(sectors)
-
-# WORKS COMPLETELY 
+ 
 
 '''
 Route that allows a climber to get a sector by its given ID
@@ -38,8 +36,6 @@ def get_one_sector(id):
 
 
 # The POST route endpoint
-
-# WORKS COMPLETELY 
 
 '''
 Route that allows an admin to create a new Sector
@@ -70,7 +66,6 @@ def create_sector():
 
 # The PUT/PATCH route endpoint
 
-# WORKS COMPLETELY
 '''
 Route that allows an admin to change a sectors details
 '''
@@ -101,7 +96,6 @@ def update_one_sector(id):
 
 # The DELETE route endpoint
 
-# WORKS COMPLETELY
 '''
 Route that allows an admin to delete a sector
 '''
@@ -114,6 +108,6 @@ def delete_one_sector(id):
     if sector:
         db.session.delete(sector)
         db.session.commit()
-        return {"message": f"Sector {sector.sector_name} has been deleted successfully"}
+        return {"message": f"Sector, {sector.sector_name} has been deleted successfully"}
     else:
         return {"error": f"Sector not found with id {id}"}, 404

@@ -11,8 +11,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 problems_bp = Blueprint("problems", __name__, url_prefix="/problems")
 
 # The GET routes endpoints
-
-# WORKS COMPLETELY 
+ 
 '''
 Route that allows a climber to get a list of all problems and their respective ascents
 '''
@@ -22,8 +21,7 @@ def get_problems():
     selection = db.select(Problem).order_by(Problem.problem_id)
     problems = db.session.scalars(selection)
     return ProblemSchema(many=True).dump(problems)
-
-# WORKS COMPLETELY 
+ 
 '''
 Route that allows a climber to get a sector by its given ID
 '''
@@ -39,8 +37,6 @@ def get_one_problem(id):
 
 
 # The POST route endpoint
-
-# WORKS COMPLETELY
 
 '''
 Route that allows an admin to create a new Problem
@@ -70,12 +66,11 @@ def create_problem():
     except DataError:
         return {"error": "Sector ID given is not in available areas"}, 409
 
-
-
 # The PUT/PATCH route endpoint
 
-# UP TO HERE
-
+'''
+Route that allows an admin to change a problems details
+'''
 @problems_bp.route("/<int:id>/", methods=["PUT", "PATCH"])
 @jwt_required()
 def update_one_problem(id):
@@ -83,16 +78,30 @@ def update_one_problem(id):
     selection = db.select(Problem).filter_by(problem_id=id)
     problem = db.session.scalar(selection)
     if problem:
-        problem.problem_name = request.json.get("problem_name") or problem.problem_name
-        problem.description = request.json.get("description") or problem.description
-        problem.access = request.json.get("access") or problem.access
-        db.session.commit()      
-        return ProblemSchema().dump(problem)
+        try:
+            info = ProblemSchema().load(request.json)
+            problem.sector_id = info["sector_id"] or problem.sector_id
+            problem.problem_name = info["problem_name"] or problem.problem_name
+            problem.description = request.json.get("description") or problem.description
+            problem.surface_type = request.json.get("surface_type") or problem.surface_type
+            problem.access = request.json.get("access") or problem.access
+            problem.grade = info["v_grade"] or problem.grade
+            problem.height_metres = info["height"] or problem.height_metres
+            problem.comments = request.json.get("comments") or problem.comments
+            db.session.commit()      
+            return ProblemSchema().dump(problem)
+        except IntegrityError:
+            return {"error": "Sector ID given is not in available areas"}, 409
+        except DataError:
+            return {"error": "Sector ID given is not in available areas"}, 409
     else:
         return {"error": f"Problem not found with id {id}"}, 404
 
 # The DELETE route endpoint
-# Allows a single problem to be deleted by its id
+
+'''
+Route that allows an admin to delete a problem
+'''
 @problems_bp.route("/<int:id>/", methods=["DELETE"])
 @jwt_required()
 def delete_one_problem(id):
@@ -102,25 +111,29 @@ def delete_one_problem(id):
     if problem:
         db.session.delete(problem)
         db.session.commit()
-        return {"message": f"Problem {problem.problem_name} has been deleted successfully"}
+        return {"message": f"Problem, {problem.problem_name} has been deleted successfully"}
     else:
         return {"error": f"Problem not found with id {id}"}, 404
 
-
-
 # Ascent routes related to problems
 
+# The GET routes endpoint
 
-# Gets ascents by their related problems
+'''
+Route that allows a climber to get all ascents by its problem id
+'''
 @problems_bp.route("/<int:id>/ascents/", methods=["GET"])
 @jwt_required()
 def get_problem_ascents(id):
     selection = db.select(Problem).filter_by(problem_id = id)
     problem = db.session.scalar(selection)
-    return AscentSchema(many = True, exclude = ["problem"]).dump(problem.ascents)
+    if problem:
+        return AscentSchema(many = True, exclude = ["problem"]).dump(problem.ascents)
+    else:
+        return {"error": f"Problem not found with id {id}"}, 404  
 
+# The POST routes endpoint
 
-# WORKS COMPLETELY 
 '''
 Route that allows a climber to add an ascent linked to their id by its problem id
 '''

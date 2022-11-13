@@ -10,7 +10,6 @@ areas_bp = Blueprint("areas", __name__, url_prefix="/areas")
 
 # The GET routes endpoints
 
-# WORKS COMPLETELY 
 '''
 Route that allows a climber to get a list of all areas and their respective sectors
 '''
@@ -21,7 +20,6 @@ def get_areas():
     areas = db.session.scalars(selection)
     return AreaSchema(many=True).dump(areas)
 
-# WORKS COMPLETELY 
 
 '''
 Route that allows a climber to get an area by its given ID
@@ -39,7 +37,6 @@ def get_one_area(id):
 
 # The POST route endpoint
 
-# WORKS COMPLETELY 
 
 '''
 Route that allows an admin to create a new Area
@@ -71,7 +68,6 @@ def create_area():
 
 # The PUT/PATCH route endpoint
 
-# WORKS COMPLETELY 
 
 '''
 Route that allows an admin to change an areas details
@@ -104,7 +100,6 @@ def update_one_area(id):
 
 # The DELETE route endpoint
 
-# WORKS COMPLETELY
 '''
 Route that allows an admin to delete an area
 '''
@@ -117,6 +112,6 @@ def delete_one_area(id):
     if area:
         db.session.delete(area)
         db.session.commit()
-        return {"message": f"Area {area.area_name} has been deleted successfully"}
+        return {"message": f"Area, {area.area_name} has been deleted successfully"}
     else:
         return {"error": f"Area not found with id {id}"}, 404

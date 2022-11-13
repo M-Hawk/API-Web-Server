@@ -200,16 +200,16 @@ def seed_db():
 
     climbers = [
         Climber(
-            user_name = "Jimbo",
+            user_name = "WaterworldRules",
             password = bcrypt.generate_password_hash("mrworldwide123").decode("utf-8"),
-            first_name = "Jim",
-            last_name = "Rules",
+            first_name = "Kevin",
+            last_name = "Costner",
             email_address = "boulderingarchitect@legends.com",
             admin = True,
             created = date.today()   
         ),
         Climber(
-            user_name = "Pyscho",
+            user_name = "Psycho",
             password = bcrypt.generate_password_hash("oneofmyfavourites567").decode("utf-8"),
             first_name = "Michael",
             last_name = "Bateman",
@@ -226,14 +226,14 @@ def seed_db():
         Ascent(
             climber = climbers[0],
             problem = problems[2],
-            tick_type = "flash", # varchar (create tuples of tick types)
+            tick_type = "flash",
             comments = "Lucky catch on the dyno, got it first go",
             created = date.today()
         ),
         Ascent(
             climber = climbers[1],
             problem = problems[1],
-            tick_type = "redpoint", # varchar (create tuples of tick types)
+            tick_type = "redpoint", 
             comments = "Huge arm pump",
             created = date.today()
         )
@@ -241,8 +241,6 @@ def seed_db():
 
     db.session.add_all(ascents)
     db.session.commit()
-
-
 
     print("Tables seeded")
 

@@ -7,8 +7,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 ascents_bp = Blueprint("ascents", __name__, url_prefix="/ascents")
 
+# The GET route endpoints
 
-# WORKS COMPLETELY 
 '''
 Route that allows a climber to get a list of all ascents
 '''
@@ -18,8 +18,7 @@ def get_ascents():
     selection = db.select(Ascent).order_by(Ascent.ascent_id)
     ascents = db.session.scalars(selection)
     return AscentSchema(many=True).dump(ascents)
-
-# WORKS COMPLETELY 
+ 
 '''
 Route that allows a climber to get an ascent by its given ID
 '''
@@ -33,8 +32,8 @@ def get_one_ascent(id):
     else:
         return {"error": f"There is no ascent with an ID of {id}"}, 404
 
+# The PUT/PATCH route endpoint
 
-# WORKS COMPLETELY 
 '''
 Route that allows a climber who owns that particular ascent to change its details
 '''
@@ -56,9 +55,8 @@ def update_own_ascent(id):
         else:
             return {"error": f"Ascent not found with id {id}"}, 404
 
+# The DELETE route endpoints
 
-
-# WORKS COMPLETELY 
 '''
 Route that allows a climber who owns that particular ascent to delete it
 '''
@@ -74,12 +72,11 @@ def delete_own_ascent(id):
             else:          
                 db.session.delete(ascent)
                 db.session.commit()
-                return {"message": f"Ascent {ascent.ascent_id} has been deleted successfully"}
+                return {"message": f"Ascent, {ascent.ascent_id} has been deleted successfully"}
         else:
             return {"error": f"Ascent not found with id {id}"}, 404
 
 
-# WORKS COMPLETELY
 '''
 Route that allows an admin to delete a single ascent by its id
 '''
@@ -92,7 +89,7 @@ def delete_one_ascent(id):
     if ascent:
         db.session.delete(ascent)
         db.session.commit()
-        return {"message": f"Ascent {ascent.ascent_id} has been deleted successfully"}
+        return {"message": f"Ascent, {ascent.ascent_id} has been deleted successfully"}
     else:
         return {"error": f"Ascent not found with id {id}"}, 404
 
