@@ -14,11 +14,11 @@ The issue is, there isn't many ways for boulderers in Australia to log their asc
 
 The aim of this application is solve the aforementioned issues by providing a means for boulderers to log their ascents, including grading the difficulty, methods of achieving it through descriptions, send type, and discussing changes that may be present.
 
-This solution is implemented through the use of an API Web Application that utilises a database to store information of known routes that have been documented, store users information and their ascents, as well as giving users the ability to access known routes and add their own found routes to the database.
+This solution is implemented through the use of an API Web Application that utilises a database to store information of known routes that have been documented, store users information and their ascents, as well as giving users the ability to access known routes and find them in specific areas.
 
-Users information is protected through the use of authentication and authorisation methods, such as the implementation of user logins, and authorisation to access and modify data through the use of tokens.
+Users information is protected through the use of authentication methods, such as the implementation of user logins utilising a slow hash password encryption service.
 
-The database is protected and managed by members of the climbing community with administration rights.
+The database is protected and managed by members of the climbing community with administration rights using authorisation to access and modify data through the use of tokens.
 
 ## Database
 
@@ -70,6 +70,8 @@ Sessions track these changes as a single virtual transaction at a time, via use 
 ORM's add another layer of protection against SQL injection by reducing explicit SQL queries and giving the ability to add query parameterization, which is a way to create SQL statements in a dynamic manner. By creating a basic query that has placeholders and adding the client side query parameters to the placeholders can help prevent malicious users from corrupting the database (What Is SQL Injection | SQLI Attack Example & Prevention Methods | Imperva, 2021).
 
 ## Endpoints
+
+[Endpoints Document for Bouldering API](/docs/endpoints.md)
 
 ## ERD
 
@@ -264,9 +266,21 @@ Add photos of trello board here
 
 ![Early Stage Trello Board](/docs/Early%20Stage%20Trello%20Board.png)
 
-## Resources
+## Setup Requirements
 
-## Tech-Stack
+* Fork or Clone Repository
+* Ensure environment variables are set correctly
+* Install & Activate virtual machine
+* Install Dependencies in requirements.txt
+* use command flask run in src/ folder
+* Hosted on http://127.0.0.1:8080
+* Test data is located under controllers/cli_commands.py
+* flask db drop && flask db create && flask db seed
+* test endpoints using  https://www.postman.com/
+
+### IP Address
+
+* http://127.0.0.1:8080
 
 ## Author
 
